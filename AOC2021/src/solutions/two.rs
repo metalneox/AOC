@@ -1,60 +1,63 @@
 pub(crate) fn solution1() {
-    //let test = include_str!(".././solutions/input/two_test");
-    let test:Vec<(String,u32)> = std::fs::read_to_string("src/solutions/input/two")
+    let test: Vec<(String, u32)> = std::fs::read_to_string("src/solutions/input/two")
         .expect("file not found!")
         .lines()
         .map(|x| {
             let mut splitto = x.split(" ");
-            let tuplo = (splitto.next().unwrap().to_string(), splitto.next().unwrap().parse::<u32>().unwrap());  
-            return tuplo;            
+            let tuplo = (
+                splitto.next().unwrap().to_string(),
+                splitto.next().unwrap().parse::<u32>().unwrap(),
+            );
+            return tuplo;
         })
-        .collect::<Vec<(String,u32)>>();
-    
+        .collect::<Vec<(String, u32)>>();
+
     let mut depth = 0;
     let mut xpos = 0;
 
-    for (cmd,value) in test{
+    for (cmd, value) in test {
         match &*cmd {
             "forward" => xpos += value,
             "down" => depth += value,
             "up" => depth -= value,
-            _ => ()
-        }        
+            _ => (),
+        }
     }
-    println!("{}",xpos*depth);
+    println!("{}", xpos * depth);
 }
 
-
 pub(crate) fn solution2() {
-    //let test = include_str!(".././solutions/input/two_test");
-    let test:Vec<(String,u32)> = std::fs::read_to_string("src/solutions/input/two")
+    let test: Vec<(String, u32)> = std::fs::read_to_string("src/solutions/input/two")
         .expect("file not found!")
         .lines()
         .map(|x| {
             let mut splitto = x.split(" ");
-            let tuplo = (splitto.next().unwrap().to_string(), splitto.next().unwrap().parse::<u32>().unwrap());  
-            return tuplo;            
+            let tuplo = (
+                splitto.next().unwrap().to_string(),
+                splitto.next().unwrap().parse::<u32>().unwrap(),
+            );
+            return tuplo;
         })
-        .collect::<Vec<(String,u32)>>();
-    
+        .collect::<Vec<(String, u32)>>();
+
     let mut depth = 0;
     let mut xpos = 0;
     let mut aim = 0;
 
-    for (cmd,value) in test{
+    for (cmd, value) in test {
         match &*cmd {
             "forward" => {
                 if aim == 0 {
                     xpos += value;
-                }else{
+                } else {
                     xpos += value;
-                    depth += aim*value;
+                    depth += aim * value;
                 }
-            },
+            }
             "down" => aim += value,
             "up" => aim -= value,
-            _ => ()
-        }        
+            _ => (),
+        }
     }
-    println!("{}",xpos*depth);
+    println!("{}", xpos * depth);
 }
