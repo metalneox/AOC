@@ -6,5 +6,6 @@ fn main() {
     //solutions::two::solution1();
     //solutions::two::solution2();
     //solutions::three::solution1();
-    solutions::three::solution2();
+    //solutions::three::solution2();
+    solutions::four::solution1n2();
 }
