@@ -215,6 +215,7 @@ fn read_line(temp_line: &str) -> Line {
     return linea;
 }
 
+//solution 1 and 2 
 pub(crate) fn solution1() {
     //Make vector of point tuple
     let stream = include_str!("../solutions/input/five");
