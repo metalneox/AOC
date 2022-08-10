@@ -9,5 +9,7 @@ fn main() {
     //solutions::three::solution2();
     //solutions::four::solution1n2();
     //solutions::five::solution1();
-    solutions::six::solution1();
+    //solutions::six::solution1();
+    //solutions::seven::solution1();
+    solutions::seven::solution2();
 }
