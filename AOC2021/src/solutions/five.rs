@@ -87,7 +87,7 @@ impl Canvas {
                     //println!("{}",i);
                 }
             }
-        }else{
+        } else {
             //check diagonale
             #[inline]
             fn diff(a: u32, b: u32) -> u32 {
@@ -98,14 +98,16 @@ impl Canvas {
                 }
             }
             //println!("a.x {} a.y {} -> b.x {} b.y {}",current_line.p1.x,current_line.p1.y,current_line.p2.x,current_line.p2.y);
-            if diff(current_line.p1.x, current_line.p2.x) == diff(current_line.p1.y, current_line.p2.y) {
+            if diff(current_line.p1.x, current_line.p2.x)
+                == diff(current_line.p1.y, current_line.p2.y)
+            {
                 // setto i valori delle diagonale nella canvas
                 if current_line.p1.x > current_line.p2.x && current_line.p1.y > current_line.p2.y {
                     //diagonale in basso a sinistra
                     //fix for
                     let mut one_x = current_line.p1.x;
                     let mut one_y = current_line.p1.y;
-                    loop{
+                    loop {
                         //check exist
                         let k = (one_x, one_y);
 
@@ -116,16 +118,19 @@ impl Canvas {
                             tmp += 1;
                             self.table.insert(k, tmp);
                         }
-                        if one_x == current_line.p2.x && one_y == current_line.p2.y {break;}
+                        if one_x == current_line.p2.x && one_y == current_line.p2.y {
+                            break;
+                        }
                         one_x -= 1;
                         one_y -= 1;
                         //println!("------{:#?}",k);
                     }
-
-                }else if current_line.p1.x < current_line.p2.x && current_line.p1.y < current_line.p2.y {
+                } else if current_line.p1.x < current_line.p2.x
+                    && current_line.p1.y < current_line.p2.y
+                {
                     let mut one_x = current_line.p1.x;
                     let mut one_y = current_line.p1.y;
-                    loop{
+                    loop {
                         //check exist
                         let k = (one_x, one_y);
 
@@ -137,16 +142,20 @@ impl Canvas {
                             self.table.insert(k, tmp);
                         }
 
-                        if one_x == current_line.p2.x && one_y == current_line.p2.y {break;}
+                        if one_x == current_line.p2.x && one_y == current_line.p2.y {
+                            break;
+                        }
                         one_x += 1;
                         one_y += 1;
                         //println!("{:#?}",k);
                     }
-                }else if current_line.p1.x < current_line.p2.x && current_line.p1.y > current_line.p2.y {
+                } else if current_line.p1.x < current_line.p2.x
+                    && current_line.p1.y > current_line.p2.y
+                {
                     //diagonale in alto a sinistra
                     let mut one_x = current_line.p1.x;
                     let mut one_y = current_line.p1.y;
-                    loop{
+                    loop {
                         //check exist
                         let k = (one_x, one_y);
 
@@ -158,14 +167,18 @@ impl Canvas {
                             self.table.insert(k, tmp);
                         }
 
-                        if one_x == current_line.p2.x && one_y == current_line.p2.y {break;}
+                        if one_x == current_line.p2.x && one_y == current_line.p2.y {
+                            break;
+                        }
                         one_x += 1;
                         one_y -= 1;
                     }
-                }else if current_line.p1.x > current_line.p2.x && current_line.p1.y < current_line.p2.y {
+                } else if current_line.p1.x > current_line.p2.x
+                    && current_line.p1.y < current_line.p2.y
+                {
                     let mut one_x = current_line.p1.x;
                     let mut one_y = current_line.p1.y;
-                    loop{
+                    loop {
                         //check exist
                         let k = (one_x, one_y);
 
@@ -176,16 +189,16 @@ impl Canvas {
                             tmp += 1;
                             self.table.insert(k, tmp);
                         }
-                        if one_x == current_line.p2.x && one_y == current_line.p2.y {break;}
+                        if one_x == current_line.p2.x && one_y == current_line.p2.y {
+                            break;
+                        }
                         one_x -= 1;
                         one_y += 1;
                     }
                 }
- 
+
                 //println!("a.x {} a.y {} -> b.x {} b.y {}",current_line.p1.x,current_line.p1.y,current_line.p2.x,current_line.p2.y);
             }
-
-
         }
     }
     fn result(&mut self) -> u32 {
@@ -215,7 +228,7 @@ fn read_line(temp_line: &str) -> Line {
     return linea;
 }
 
-//solution 1 and 2 
+//solution 1 and 2
 pub(crate) fn solution1() {
     //Make vector of point tuple
     let stream = include_str!("../solutions/input/five");

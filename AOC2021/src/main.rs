@@ -11,5 +11,7 @@ fn main() {
     //solutions::five::solution1();
     //solutions::six::solution1();
     //solutions::seven::solution1();
-    solutions::seven::solution2();
+    //solutions::seven::solution2();
+    //solutions::eight::solution1();
+    solutions::eight::solution2();
 }
