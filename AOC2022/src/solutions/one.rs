@@ -25,7 +25,6 @@ pub(crate) fn solution2() {
 
     for value in calories {
         let temp = value.split("\n").map(|x| x.to_string()).collect::<Vec<String>>();  
-        let prova = temp[0].parse::<i32>();
         let current:i32 = temp.iter().map(|x| x.parse::<i32>().unwrap()).sum();
 
         vet.push(current);
