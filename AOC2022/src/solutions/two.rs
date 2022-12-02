@@ -13,7 +13,6 @@ pub(crate) fn solution1() {
 
     let mut result = 0;
 
-    // 1 for Rock, 2 for Paper, and 3 for Scissors valgono sempre
     for value in games{
         let temp:Vec<&str> = value.split(" ").collect();
         let player1 = temp[0];
@@ -37,11 +36,8 @@ pub(crate) fn solution1() {
         match game {
             game if game.0 == game.1 => result+=3,
             (status::Rock,status::Paper) => result+=6,
-            (status::Rock,status::Scissors) => (),
-            (status::Paper,status::Rock) => (),
             (status::Paper,status::Scissors) => result+=6,
             (status::Scissors,status::Rock) => result+=6,
-            (status::Scissors,status::Paper) => (),
             _ =>(),
         }
 
@@ -53,14 +49,14 @@ pub(crate) fn solution1() {
         } 
     }
 
-    println!("Result => {}",result);
+    println!("Result solution 1 => {}",result);
 
 }
 
 
 fn win(value:status)->status{
     match value {
-        status::Scissors=> status::Rock,
+        status::Scissors => status::Rock,
         status::Paper => status::Scissors,
         status::Rock => status::Paper,
         _ =>status::Null,
@@ -83,7 +79,6 @@ pub(crate) fn solution2() {
 
     let mut result = 0;
 
-    // 1 for Rock, 2 for Paper, and 3 for Scissors valgono sempre
     for value in games{
         let temp:Vec<&str> = value.split(" ").collect();
         let player1 = temp[0];
@@ -96,32 +91,22 @@ pub(crate) fn solution2() {
                             "C" => status::Scissors,
                             _ => status::Null};
 
-        //println!("{}",game_status);
-        //println!("{:#?}",p1_status);
         let game_lost = lost(p1_status);
         let game_win = win(p1_status);
-        
-        //println!("lost{:#?}-win{:#?}",game_lost,game_win);
-
-        //Mi prende sempre lo stesso valore
+    
         let p2_status = match game_status {
-                            "X" =>game_lost,//perdere
-                            "Y" => p1_status,//pareggio
-                            "Z" => game_win,//vincere
+                            "X" =>game_lost,
+                            "Y" => p1_status,
+                            "Z" => game_win,
                             _ => status::Null};
-
-        println!("{:#?}-{:#?}",p1_status,p2_status);
 
         let game = (p1_status,p2_status);
 
         match game {
             game if game.0 == game.1 => result+=3,
             (status::Rock,status::Paper) => result+=6,
-            //(status::Rock,status::Scissors) => (),
-            //(status::Paper,status::Rock) => (),
             (status::Paper,status::Scissors) => result+=6,
             (status::Scissors,status::Rock) => result+=6,
-            //(status::Scissors,status::Paper) => (),
             _ =>(),
         }
 
