@@ -1,124 +1,81 @@
-#[derive(Clone,Copy,Debug,PartialEq)]
-enum status{
-    Rock,
-    Paper,
-    Scissors,
-    Null,
-}
+use std::collections::HashMap;
 
 pub(crate) fn solution1() {
     let text = include_str!("../solutions/input/two");
 
-    let games = text.split("\n").collect::<Vec<_>>();
-
     let mut result = 0;
 
-    for value in games{
-        let temp:Vec<&str> = value.split(" ").collect();
-        let player1 = temp[0];
-        //Me
-        let player2 = temp[1];
+    let mut colors_max: HashMap<&str, u32> = HashMap::new();
+    colors_max.insert("red", 12);
+    colors_max.insert("green", 13);
+    colors_max.insert("blue", 14);
 
-        let p1_status = match player1 {
-                            "A" => status::Rock,
-                            "B" => status::Paper,
-                            "C" => status::Scissors,
-                            _ => status::Null};
+    for line in text.lines() {
+        //togliere collect
+        let splited = line.split(':').collect::<Vec<&str>>();
 
-        let p2_status = match player2 {
-                            "X" => status::Rock,
-                            "Y" => status::Paper,
-                            "Z" => status::Scissors,
-                            _ => status::Null};
+        let id = splited[0].strip_prefix("Game ").unwrap_or("");
+        let mut game_valid = true;
 
-        let game = (p1_status,p2_status);
+        for bags in splited[1].split(|c| matches!(c, ',' | ';')) {
+            let mut current_bag = bags.split_whitespace();
 
-        match game {
-            game if game.0 == game.1 => result+=3,
-            (status::Rock,status::Paper) => result+=6,
-            (status::Paper,status::Scissors) => result+=6,
-            (status::Scissors,status::Rock) => result+=6,
-            _ =>(),
+            let value_bag: u32 = current_bag
+                .next()
+                .expect("No numeric part")
+                .parse()
+                .expect("Failed to parse numeric part");
+
+            let string_bag = current_bag.next().expect("No string part");
+
+            if value_bag > *colors_max.get(string_bag).unwrap() {
+                game_valid = false;
+                break;
+            }
         }
-
-        match player2 {
-            "X" => result+=1,
-            "Y" => result+=2,
-            "Z" => result+=3,
-            _ => ()
-        } 
+        //12 red cubes, 13 green cubes, and 14 blue cubes?
+        if game_valid {
+            result += id.trim().parse::<i32>().unwrap();
+        }
     }
 
-    println!("Result solution 1 => {}",result);
-
-}
-
-
-fn win(value:status)->status{
-    match value {
-        status::Scissors => status::Rock,
-        status::Paper => status::Scissors,
-        status::Rock => status::Paper,
-        _ =>status::Null,
-    }
-}
-
-fn lost(value:status)->status{
-    match value {
-        status::Scissors=> status::Paper,
-        status::Paper => status::Rock,
-        status::Rock => status::Scissors,
-        _ =>status::Null,
-    }
+    println!("Result solution 1 ==> {}", result); //2285
 }
 
 pub(crate) fn solution2() {
     let text = include_str!("../solutions/input/two");
 
-    let games = text.split("\n").collect::<Vec<_>>();
-
     let mut result = 0;
 
-    for value in games{
-        let temp:Vec<&str> = value.split(" ").collect();
-        let player1 = temp[0];
-        //Me
-        let game_status = temp[1];
+    let mut colors_max: HashMap<&str, u32> = HashMap::new();
+    for line in text.lines() {
+        colors_max.insert("red", 0);
+        colors_max.insert("green", 0);
+        colors_max.insert("blue", 0);
 
-        let p1_status = match player1 {
-                            "A" => status::Rock,
-                            "B" => status::Paper,
-                            "C" => status::Scissors,
-                            _ => status::Null};
+        let splited = line.split(':').collect::<Vec<&str>>();
 
-        let game_lost = lost(p1_status);
-        let game_win = win(p1_status);
-    
-        let p2_status = match game_status {
-                            "X" =>game_lost,
-                            "Y" => p1_status,
-                            "Z" => game_win,
-                            _ => status::Null};
+        for bags in splited[1].split(|c| matches!(c, ',' | ';')) {
+            let mut current_bag = bags.split_whitespace();
 
-        let game = (p1_status,p2_status);
+            let value_bag: u32 = current_bag
+                .next()
+                .expect("No numeric part")
+                .parse()
+                .expect("Failed to parse numeric part");
 
-        match game {
-            game if game.0 == game.1 => result+=3,
-            (status::Rock,status::Paper) => result+=6,
-            (status::Paper,status::Scissors) => result+=6,
-            (status::Scissors,status::Rock) => result+=6,
-            _ =>(),
+            let string_bag = current_bag.next().expect("No string part");
+
+            let curr_max = colors_max.get_mut(string_bag).unwrap();
+
+            if value_bag > *curr_max {
+                *curr_max = value_bag;
+            }
         }
-
-        match p2_status {
-            status::Rock => result+=1,
-            status::Paper => result+=2,
-            status::Scissors => result+=3,
-            _ => ()
-        } 
+        result += colors_max.get("red").unwrap()
+            * colors_max.get("green").unwrap()
+            * colors_max.get("blue").unwrap();
     }
 
-    println!("Result solution 2 => {}",result);
-
+    println!("Result solution 2 ==> {}", result); //77021
 }
-

@@ -16,6 +16,8 @@ pub(crate) fn solution1() {
     println!("Solutions 1 =>{}", result);
 }
 
+//soluzione alternativa interessante sostituisci dalle stringhe i nomi con i numeri e poi riusare
+//la solution 1
 pub(crate) fn solution2() {
     let text = include_str!("../solutions/input/one");
 
