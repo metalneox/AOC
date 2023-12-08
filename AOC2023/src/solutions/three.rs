@@ -9,7 +9,6 @@ struct Position {
 fn check_neighbors(current_pos: (usize, usize), grid: &[[char; 140]; 140]) -> bool {
     let x = current_pos.0 as i32;
     let y = current_pos.1 as i32;
-
     //println!("{:#?}",grid);
     let neighbors: Vec<(i32, i32)> = vec![
         (-1, 0),
@@ -81,6 +80,7 @@ pub(crate) fn solution1() {
     let mut num_pos: Vec<Position> = vec![];
 
     let mut pos_init = (0, 0);
+    //let mut pos_end = (0, 0);
 
     for row_char in grid.iter().enumerate() {
         let mut temp = "".to_string();
@@ -90,18 +90,16 @@ pub(crate) fn solution1() {
                     pos_init = (row_char.0, current_char.0);
                 }
                 temp.push(*current_char.1);
-            } else {
-                if !temp.is_empty() {
-                    let num = temp.parse::<i32>().unwrap();
-                    //println!("{}", num);
-                    let pos_end = (row_char.0, current_char.0);
-                    num_pos.push(Position {
-                        num: num,
-                        pos_init: pos_init,
-                        pos_end: pos_end,
-                    });
-                    temp.clear();
-                }
+            } else if !temp.is_empty() {
+                let num = temp.parse::<i32>().unwrap();
+                //println!("{}", num);
+                let pos_end = (row_char.0, current_char.0);
+                num_pos.push(Position {
+                    num: num,
+                    pos_init: pos_init,
+                    pos_end: pos_end,
+                });
+                temp.clear();
             }
         }
     }

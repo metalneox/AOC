@@ -1,45 +1,55 @@
+struct Card {
+    num: usize,
+    win_num: Vec<usize>,
+    extr_num: Vec<usize>,
+}
+
 pub(crate) fn solution1() {
-    let text = include_str!("../solutions/input/four");
-    let jobs = text.split("\n").collect::<Vec<_>>();
+    let text = include_str!("../solutions/input/four_test");
 
-    let mut result = 0;
+    let mut games: Vec<Card> = vec![];
 
-    for line in jobs {
-        let current_line = line.trim().split(",").collect::<Vec<_>>();
+    //init struct
+    for line in text.lines() {
+        let mut current_card: Card;
 
-        //il min e max
-        let first = current_line[0].split("-").map(|x| x.parse::<u32>().unwrap()).collect::<Vec<_>>();
-        let second = current_line[1].split("-").map(|x| x.parse::<u32>().unwrap()).collect::<Vec<_>>();
+        let row = line.split_once(":").unwrap();
 
-         
-   
-        if first[0] <= second[0] && first[1]>= second[1] || first[0] >= second[0] && first[1] <= second[1] {
-            result += 1;
-        }
-        
+        let num = row.0.split_once(" ").unwrap().1.parse::<usize>().unwrap();
+
+        let card_val = row.1.split_once("|").unwrap();
+
+        let card1: Vec<usize> = card_val
+            .0
+            .split_whitespace()
+            .map(|x| x.parse::<usize>().unwrap())
+            .collect();
+
+        let card2: Vec<usize> = card_val
+            .1
+            .split_whitespace()
+            .map(|x| x.parse::<usize>().unwrap())
+            .collect();
+
+        //println!("Num {} =>", num);
+        //println!("Card Val {:#?} =>", card1);
+        //println!("Card Val1 {:#?} =>", card2);
+
+        let current_struct = Card {
+            num: num,
+            win_num: card1,
+            extr_num: card2,
+        };
+
+        games.push(current_struct);
+
+        //
     }
-    
-    println!("Day 4 solution 1 => {}",result);
+
+    let result = 0;
+    println!("Day 4 solution 1 => {}", result);
 }
 
 pub(crate) fn solution2() {
-    let text = include_str!("../solutions/input/four");
-    let jobs = text.split("\n").collect::<Vec<_>>();
-
-    let mut result = 0;
-
-    for line in jobs {
-        let current_line = line.trim().split(",").collect::<Vec<_>>();
-
-        let first = current_line[0].split("-").map(|x| x.parse::<u32>().unwrap()).collect::<Vec<_>>();
-        let second = current_line[1].split("-").map(|x| x.parse::<u32>().unwrap()).collect::<Vec<_>>();
-
-        if !(first[1] < second[0] || first[0] > second[1]){
-            result += 1;
-        }
-        
-    }
-    
-    println!("Day 4 solution 2 => {}",result);
-
+    //println!("Day 4 solution 2 => {}", result);
 }
