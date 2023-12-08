@@ -1,4 +1,5 @@
 #[warn(dead_code)]
+#[derive(Debug)]
 struct Position {
     num: i32,
     pos_init: (usize, usize),
@@ -8,9 +9,6 @@ struct Position {
 fn check_neighbors(current_pos: (usize, usize), grid: &[[char; 140]; 140]) -> bool {
     let x = current_pos.0 as i32;
     let y = current_pos.1 as i32;
-
-    //esempio 0,1
-    //0,0 |0,2 |1,0 |1,1 |1,2 |-1,0 |-1,-1|-1,2
 
     //println!("{:#?}",grid);
     let neighbors: Vec<(i32, i32)> = vec![
@@ -52,7 +50,7 @@ fn resolve_p1(num_data: Vec<Position>, grid: &[[char; 140]; 140]) -> i32 {
             let temp = (current.pos_init.0, a);
             let valid = check_neighbors(temp, grid);
 
-            println!("current {}--{}", current.num, valid);
+            //println!("current {}--{}", current.num, valid);
             if valid {
                 //println!("current {}", current.num);
                 result += current.num;
@@ -66,6 +64,7 @@ fn resolve_p1(num_data: Vec<Position>, grid: &[[char; 140]; 140]) -> i32 {
 }
 
 pub(crate) fn solution1() {
+    //let text = include_str!("../solutions/input/three_test");
     let text = include_str!("../solutions/input/three");
     //Grid size test
     //let mut grid = [['.'; 10]; 10];
@@ -79,13 +78,9 @@ pub(crate) fn solution1() {
         }
     }
 
-    let mut x = 0;
-    let mut y = 0;
-
     let mut num_pos: Vec<Position> = vec![];
 
     let mut pos_init = (0, 0);
-    let mut pos_end = (0, 0);
 
     for row_char in grid.iter().enumerate() {
         let mut temp = "".to_string();
@@ -99,26 +94,20 @@ pub(crate) fn solution1() {
                 if !temp.is_empty() {
                     let num = temp.parse::<i32>().unwrap();
                     //println!("{}", num);
-                    pos_end = (row_char.0, current_char.0);
+                    let pos_end = (row_char.0, current_char.0);
                     num_pos.push(Position {
                         num: num,
                         pos_init: pos_init,
                         pos_end: pos_end,
                     });
-                    temp = "".to_string();
-                    pos_init = (0, 0);
-                    pos_end = (0, 0);
+                    temp.clear();
                 }
             }
-            y += 1;
         }
-        x += 1;
-        y = 0;
     }
 
-    //println!("{:#?}", num_pos);
+    println!("{:#?}", num_pos);
     let result = resolve_p1(num_pos, &grid);
-
     println!("Day 3 solution 1 => {}", result);
 }
 
