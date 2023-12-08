@@ -104,7 +104,7 @@ pub(crate) fn solution1() {
         }
     }
 
-    println!("{:#?}", num_pos);
+    //println!("{:#?}", num_pos);
     let result = resolve_p1(num_pos, &grid);
     println!("Day 3 solution 1 => {}", result);
 }

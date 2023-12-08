@@ -1,3 +1,4 @@
+#[derive(Debug)]
 struct Card {
     num: usize,
     win_num: Vec<usize>,
@@ -5,7 +6,7 @@ struct Card {
 }
 
 pub(crate) fn solution1() {
-    let text = include_str!("../solutions/input/four_test");
+    let text = include_str!("../solutions/input/four");
 
     let mut games: Vec<Card> = vec![];
 
@@ -15,7 +16,12 @@ pub(crate) fn solution1() {
 
         let row = line.split_once(":").unwrap();
 
-        let num = row.0.split_once(" ").unwrap().1.parse::<usize>().unwrap();
+        println!("{:#?}", row);
+        ////TODO: Ricontrollare che sia tutto ok ho fatto unwrap_or per un overfloww
+        let tuple_num = row.0.split_once(" ").unwrap();
+        //.1.parse::<usize>().unwrap();
+
+        let num = tuple_num.1.trim().parse::<usize>().unwrap();
 
         let card_val = row.1.split_once("|").unwrap();
 
@@ -31,10 +37,6 @@ pub(crate) fn solution1() {
             .map(|x| x.parse::<usize>().unwrap())
             .collect();
 
-        //println!("Num {} =>", num);
-        //println!("Card Val {:#?} =>", card1);
-        //println!("Card Val1 {:#?} =>", card2);
-
         let current_struct = Card {
             num: num,
             win_num: card1,
@@ -42,11 +44,32 @@ pub(crate) fn solution1() {
         };
 
         games.push(current_struct);
-
-        //
     }
 
-    let result = 0;
+    let mut result = 0;
+    for game in games {
+        //let mut points = 0;
+
+        let points = game
+            .extr_num
+            .iter()
+            .filter(|x| game.win_num.contains(x))
+            .count();
+
+        if points > 0 {
+            result += (1..points).fold(1, |a, _| a * 2);
+        }
+
+        /*
+        for extr in game.extr_num {
+            if game.win_num.contains(&extr) {
+                points += 1;
+            }
+        }
+        */
+    }
+
+    //println!("{:#?}", games);
     println!("Day 4 solution 1 => {}", result);
 }
 
