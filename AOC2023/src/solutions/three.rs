@@ -1,57 +1,125 @@
-pub(crate) fn solution1() {
-    let text = include_str!("../solutions/input/three"); 
-    let bags = text.split("\n").collect::<Vec<_>>();
-    let alphabet: Vec<char> = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect();
-    let mut result = 0;
+#[warn(dead_code)]
+struct Position {
+    num: i32,
+    pos_init: (usize, usize),
+    pos_end: (usize, usize),
+}
 
-    for current in bags{
-        let (split1, split2) = current.split_at(current.len()/2);
+fn check_neighbors(current_pos: (usize, usize), grid: &[[char; 140]; 140]) -> bool {
+    let x = current_pos.0 as i32;
+    let y = current_pos.1 as i32;
 
-        let vet1 = split1.chars().collect::<Vec<char>>();
-        let vet2 = split2.chars().collect::<Vec<char>>();
+    //esempio 0,1
+    //0,0 |0,2 |1,0 |1,1 |1,2 |-1,0 |-1,-1|-1,2
 
-        let letter = vet1.iter()
-                         .filter(|x| vet2.contains(x)) 
-                         .map(|x| *x)
-                         .collect::<Vec<char>>();
+    //println!("{:#?}",grid);
+    let neighbors: Vec<(i32, i32)> = vec![
+        (-1, 0),
+        (-1, -1),
+        (0, -1),
+        (-1, 1),
+        (1, 0),
+        (1, 1),
+        (0, 1),
+        (1, -1),
+    ];
 
-        let index_opt = alphabet.iter().position(|x| *x == letter[0]);
-        let mut index = 0;
+    for neighbor in neighbors {
+        if x + neighbor.0 < grid.len() as i32
+            && (x + neighbor.0) >= 0
+            && y + neighbor.1 < grid.len() as i32
+            && (y + neighbor.1) >= 0
+        {
+            let current_x = (x + neighbor.0) as usize;
+            let current_y = (y + neighbor.1) as usize;
 
-        if index_opt.is_some(){
-           index = index_opt.unwrap()+1;
+            if grid[current_x][current_y] != '.' && !grid[current_x][current_y].is_numeric() {
+                return true;
+            }
         }
-        result += index;
     }
-    
-    println!("Day 3 solution 1 => {}",result);
 
+    false
 }
 
-pub(crate) fn solution2() {
-    let text = include_str!("../solutions/input/three"); 
-    let bags = text.split("\n").collect::<Vec<_>>();
-    let alphabet: Vec<char> = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect();
+//horizontal
+fn resolve_p1(num_data: Vec<Position>, grid: &[[char; 140]; 140]) -> i32 {
     let mut result = 0;
+    for current in num_data {
+        let range_pos = current.pos_init.1..current.pos_end.1;
 
-    let three = bags.chunks(3).map(|x| x.to_vec()).collect::<Vec<Vec<&str>>>();
-    
+        for a in range_pos {
+            let temp = (current.pos_init.0, a);
+            let valid = check_neighbors(temp, grid);
 
-    for group in three{
-
-        let compare = group[0].chars().filter(|x| group[1].contains(*x)).map(|x| x).collect::<Vec<char>>();
-
-        let letter = compare.iter().filter(|&&x| group[2].contains(x)).map(|x| *x).collect::<Vec<char>>();
- 
-        let index_opt = alphabet.iter().position(|x| *x == letter[0]);
-        let mut index = 0;
-    
-        if index_opt.is_some(){
-           index = index_opt.unwrap()+1;
+            println!("current {}--{}", current.num, valid);
+            if valid {
+                //println!("current {}", current.num);
+                result += current.num;
+                //println!("Somma {}", result);
+                break;
+            }
         }
-        result += index;
-    }   
-      
-    println!("Day 3 solution 2 => {}",result);
+    }
 
+    result
 }
+
+pub(crate) fn solution1() {
+    let text = include_str!("../solutions/input/three");
+    //Grid size test
+    //let mut grid = [['.'; 10]; 10];
+    //Grid Size full data
+    let mut grid = [['.'; 140]; 140];
+
+    //make grid
+    for line in text.lines().enumerate() {
+        for init in line.1.chars().enumerate() {
+            grid[line.0][init.0] = init.1;
+        }
+    }
+
+    let mut x = 0;
+    let mut y = 0;
+
+    let mut num_pos: Vec<Position> = vec![];
+
+    let mut pos_init = (0, 0);
+    let mut pos_end = (0, 0);
+
+    for row_char in grid.iter().enumerate() {
+        let mut temp = "".to_string();
+        for current_char in row_char.1.iter().enumerate() {
+            if current_char.1.is_numeric() {
+                if temp.is_empty() {
+                    pos_init = (row_char.0, current_char.0);
+                }
+                temp.push(*current_char.1);
+            } else {
+                if !temp.is_empty() {
+                    let num = temp.parse::<i32>().unwrap();
+                    //println!("{}", num);
+                    pos_end = (row_char.0, current_char.0);
+                    num_pos.push(Position {
+                        num: num,
+                        pos_init: pos_init,
+                        pos_end: pos_end,
+                    });
+                    temp = "".to_string();
+                    pos_init = (0, 0);
+                    pos_end = (0, 0);
+                }
+            }
+            y += 1;
+        }
+        x += 1;
+        y = 0;
+    }
+
+    //println!("{:#?}", num_pos);
+    let result = resolve_p1(num_pos, &grid);
+
+    println!("Day 3 solution 1 => {}", result);
+}
+
+pub(crate) fn _solution2() {}
