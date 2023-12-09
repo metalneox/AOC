@@ -7,8 +7,8 @@ fn main() {
     //solutions::two::solution2();
     solutions::three::solution1();
     //solutions::three::solution2();
-    solutions::four::solution1();
-    //solutions::four::solution2();
+    //solutions::four::solution1();
+    solutions::four::solution2();
     //solutions::five::solution1();
     //solutions::six::solution1();
     //solutions::seven::solution1();
